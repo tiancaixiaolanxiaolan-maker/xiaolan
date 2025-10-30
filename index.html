@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>无限数量弹窗提示</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background-color: #000;
+            font-family: "Microsoft YaHei", sans-serif;
+            overflow: hidden;
+        }
+        .miss-message {
+            position: absolute;
+            font-size: 14px;
+            color: #fff;
+            font-weight: 400;
+            padding: 6px 12px;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(255,255,255,0.2);
+            animation: float 3s ease-in-out forwards;
+            opacity: 0;
+        }
+        @keyframes float {
+            0% { transform: translateY(8px); opacity: 0; }
+            10% { transform: translateY(0); opacity: 1; }
+            80% { transform: translateY(-30px); opacity: 1; }
+            100% { transform: translateY(-60px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const messages = ['我想你了', '你还好吗？', '吃饭了吗？', '开心吗'];
+        const bgColors = [
+            'rgba(255, 105, 180, 0.9)',
+            'rgba(135, 206, 235, 0.9)',
+            'rgba(255, 182, 193, 0.9)'
+        ];
+
+        // 取消固定数量限制，每次随机生成4-8个弹窗，数量更灵活
+        setInterval(() => {
+            const count = Math.floor(Math.random() * 5) + 4;
+            for (let i = 0; i < count; i++) {
+                const message = document.createElement('div');
+                message.className = 'miss-message';
+                
+                const randomMsgIdx = Math.floor(Math.random() * messages.length);
+                message.textContent = messages[randomMsgIdx];
+                message.style.backgroundColor = bgColors[Math.floor(Math.random() * bgColors.length)];
+
+                const maxX = window.innerWidth - 100;
+                const maxY = window.innerHeight - 40;
+                const randomX = Math.random() * maxX;
+                const randomY = Math.random() * maxY;
+                message.style.left = `${randomX}px`;
+                message.style.top = `${randomY}px`;
+
+                document.body.appendChild(message);
+                setTimeout(() => message.remove(), 3000);
+            }
+        }, 200);
+    </script>
+</body>
+</html>
